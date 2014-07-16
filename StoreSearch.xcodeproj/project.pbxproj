@@ -13,15 +13,14 @@
 		97EBDE2D1976DEDB00D4E3C7 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 97EBDE2B1976DEDB00D4E3C7 /* InfoPlist.strings */; };
 		97EBDE2F1976DEDB00D4E3C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 97EBDE2E1976DEDB00D4E3C7 /* main.m */; };
 		97EBDE331976DEDB00D4E3C7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 97EBDE321976DEDB00D4E3C7 /* AppDelegate.m */; };
-		97EBDE361976DEDB00D4E3C7 /* Main_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97EBDE341976DEDB00D4E3C7 /* Main_iPhone.storyboard */; };
-		97EBDE391976DEDB00D4E3C7 /* Main_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97EBDE371976DEDB00D4E3C7 /* Main_iPad.storyboard */; };
-		97EBDE3C1976DEDB00D4E3C7 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 97EBDE3B1976DEDB00D4E3C7 /* ViewController.m */; };
 		97EBDE3E1976DEDB00D4E3C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97EBDE3D1976DEDB00D4E3C7 /* Images.xcassets */; };
 		97EBDE451976DEDB00D4E3C7 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97EBDE441976DEDB00D4E3C7 /* XCTest.framework */; };
 		97EBDE461976DEDB00D4E3C7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97EBDE221976DEDB00D4E3C7 /* Foundation.framework */; };
 		97EBDE471976DEDB00D4E3C7 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97EBDE261976DEDB00D4E3C7 /* UIKit.framework */; };
 		97EBDE4F1976DEDB00D4E3C7 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 97EBDE4D1976DEDB00D4E3C7 /* InfoPlist.strings */; };
 		97EBDE511976DEDB00D4E3C7 /* StoreSearchTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 97EBDE501976DEDB00D4E3C7 /* StoreSearchTests.m */; };
+		97EBDE5D1976E00B00D4E3C7 /* SearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 97EBDE5B1976E00B00D4E3C7 /* SearchViewController.m */; };
+		97EBDE5E1976E00B00D4E3C7 /* SearchViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 97EBDE5C1976E00B00D4E3C7 /* SearchViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -45,16 +44,15 @@
 		97EBDE301976DEDB00D4E3C7 /* StoreSearch-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "StoreSearch-Prefix.pch"; sourceTree = "<group>"; };
 		97EBDE311976DEDB00D4E3C7 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		97EBDE321976DEDB00D4E3C7 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		97EBDE351976DEDB00D4E3C7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPhone.storyboard; sourceTree = "<group>"; };
-		97EBDE381976DEDB00D4E3C7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPad.storyboard; sourceTree = "<group>"; };
-		97EBDE3A1976DEDB00D4E3C7 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		97EBDE3B1976DEDB00D4E3C7 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		97EBDE3D1976DEDB00D4E3C7 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		97EBDE431976DEDB00D4E3C7 /* StoreSearchTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StoreSearchTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		97EBDE441976DEDB00D4E3C7 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		97EBDE4C1976DEDB00D4E3C7 /* StoreSearchTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "StoreSearchTests-Info.plist"; sourceTree = "<group>"; };
 		97EBDE4E1976DEDB00D4E3C7 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		97EBDE501976DEDB00D4E3C7 /* StoreSearchTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StoreSearchTests.m; sourceTree = "<group>"; };
+		97EBDE5A1976E00B00D4E3C7 /* SearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchViewController.h; sourceTree = "<group>"; };
+		97EBDE5B1976E00B00D4E3C7 /* SearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchViewController.m; sourceTree = "<group>"; };
+		97EBDE5C1976E00B00D4E3C7 /* SearchViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchViewController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -116,12 +114,11 @@
 			children = (
 				97EBDE311976DEDB00D4E3C7 /* AppDelegate.h */,
 				97EBDE321976DEDB00D4E3C7 /* AppDelegate.m */,
-				97EBDE341976DEDB00D4E3C7 /* Main_iPhone.storyboard */,
-				97EBDE371976DEDB00D4E3C7 /* Main_iPad.storyboard */,
-				97EBDE3A1976DEDB00D4E3C7 /* ViewController.h */,
-				97EBDE3B1976DEDB00D4E3C7 /* ViewController.m */,
 				97EBDE3D1976DEDB00D4E3C7 /* Images.xcassets */,
 				97EBDE291976DEDB00D4E3C7 /* Supporting Files */,
+				97EBDE5A1976E00B00D4E3C7 /* SearchViewController.h */,
+				97EBDE5B1976E00B00D4E3C7 /* SearchViewController.m */,
+				97EBDE5C1976E00B00D4E3C7 /* SearchViewController.xib */,
 			);
 			path = StoreSearch;
 			sourceTree = "<group>";
@@ -231,10 +228,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				97EBDE391976DEDB00D4E3C7 /* Main_iPad.storyboard in Resources */,
 				97EBDE3E1976DEDB00D4E3C7 /* Images.xcassets in Resources */,
-				97EBDE361976DEDB00D4E3C7 /* Main_iPhone.storyboard in Resources */,
 				97EBDE2D1976DEDB00D4E3C7 /* InfoPlist.strings in Resources */,
+				97EBDE5E1976E00B00D4E3C7 /* SearchViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -253,8 +249,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				97EBDE3C1976DEDB00D4E3C7 /* ViewController.m in Sources */,
 				97EBDE331976DEDB00D4E3C7 /* AppDelegate.m in Sources */,
+				97EBDE5D1976E00B00D4E3C7 /* SearchViewController.m in Sources */,
 				97EBDE2F1976DEDB00D4E3C7 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -284,22 +280,6 @@
 				97EBDE2C1976DEDB00D4E3C7 /* en */,
 			);
 			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-		97EBDE341976DEDB00D4E3C7 /* Main_iPhone.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				97EBDE351976DEDB00D4E3C7 /* Base */,
-			);
-			name = Main_iPhone.storyboard;
-			sourceTree = "<group>";
-		};
-		97EBDE371976DEDB00D4E3C7 /* Main_iPad.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				97EBDE381976DEDB00D4E3C7 /* Base */,
-			);
-			name = Main_iPad.storyboard;
 			sourceTree = "<group>";
 		};
 		97EBDE4D1976DEDB00D4E3C7 /* InfoPlist.strings */ = {
@@ -394,6 +374,7 @@
 				GCC_PREFIX_HEADER = "StoreSearch/StoreSearch-Prefix.pch";
 				INFOPLIST_FILE = "StoreSearch/StoreSearch-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -407,6 +388,7 @@
 				GCC_PREFIX_HEADER = "StoreSearch/StoreSearch-Prefix.pch";
 				INFOPLIST_FILE = "StoreSearch/StoreSearch-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
