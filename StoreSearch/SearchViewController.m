@@ -7,6 +7,7 @@
 //
 
 #import "SearchViewController.h"
+#import "SearchResult.h"
 
 @interface SearchViewController ()
 @property (nonatomic, weak) IBOutlet UISearchBar* searchBar;
@@ -61,9 +62,12 @@
     
     if(cell == nil)
     {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
     }
-    cell.textLabel.text = _searchResults[indexPath.row];
+    
+    SearchResult* searchResult = _searchResults[indexPath.row];
+    cell.textLabel.text = searchResult.name;
+    cell.detailTextLabel.text = searchResult.artistName;
     
     return cell;
 }
@@ -71,12 +75,24 @@
 #pragma  mark - Search bar delegate
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
+    [searchBar resignFirstResponder];
+    
     _searchResults = [NSMutableArray arrayWithCapacity:10];
-    for (int i = 0; i < 3; i++) {
-        [_searchResults addObject:[NSString stringWithFormat:
-                                   @"Fake Result %d for '%@'", i, searchBar.text]];
+    for (int i = 0; i < 3; i++)
+    {
+        SearchResult* searchResult = [[SearchResult alloc] init];
+        searchResult.name = [NSString stringWithFormat:
+                             @"Fake Result %d for '%@'", i, searchBar.text];
+        searchResult.artistName = searchBar.text;
+        [_searchResults addObject:searchResult];
     }
     [self.tableView reloadData];
+}
+
+//This will make the search bar stretch from the top
+- (UIBarPosition)positionForBar:(id<UIBarPositioning>)bar
+{
+    return UIBarPositionTopAttached;
 }
 
 @end
