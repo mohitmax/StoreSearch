@@ -49,6 +49,10 @@
     {
         return 0;
     }
+    else if (_searchResults.count == 0)
+    {
+        return 1;
+    }
     else
     {
         return _searchResults.count;
@@ -65,11 +69,38 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
     }
     
-    SearchResult* searchResult = _searchResults[indexPath.row];
-    cell.textLabel.text = searchResult.name;
-    cell.detailTextLabel.text = searchResult.artistName;
+    if(_searchResults.count == 0)
+    {
+        cell.textLabel.text = @"(Nothing Found)";
+        cell.detailTextLabel.text = @"";
+    }
+    else
+    {
+        SearchResult* searchResult = _searchResults[indexPath.row];
+        cell.textLabel.text = searchResult.name;
+        cell.detailTextLabel.text = searchResult.artistName;
+    }
     
     return cell;
+}
+
+#pragma mark - table view delegate
+
+- (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
+- (NSIndexPath*)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if(_searchResults.count == 0)
+    {
+        return nil;
+    }
+    else
+    {
+        return indexPath;
+    }
 }
 
 #pragma  mark - Search bar delegate
@@ -78,15 +109,41 @@
     [searchBar resignFirstResponder];
     
     _searchResults = [NSMutableArray arrayWithCapacity:10];
-    for (int i = 0; i < 3; i++)
+    if(![searchBar.text isEqualToString:@"juju"])
     {
-        SearchResult* searchResult = [[SearchResult alloc] init];
-        searchResult.name = [NSString stringWithFormat:
-                             @"Fake Result %d for '%@'", i, searchBar.text];
-        searchResult.artistName = searchBar.text;
-        [_searchResults addObject:searchResult];
+        for (int i = 0; i < 3; i++)
+        {
+            SearchResult* searchResult = [[SearchResult alloc] init];
+            searchResult.name = [NSString stringWithFormat:
+                                 @"Fake Result %d for '%@'", i, searchBar.text];
+            searchResult.artistName = searchBar.text;
+            [_searchResults addObject:searchResult];
+        }
     }
     [self.tableView reloadData];
+}
+
+- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar
+{
+    if([searchBar.text isEqual:@""])
+    {
+        [_searchResults removeAllObjects];
+        _searchResults = nil;
+        [self.tableView reloadData];
+        NSLog(@"Begin editing : %@", searchBar.text);
+    }
+}
+
+//This method is called when the text in the search bar changes. 
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
+{
+    if ([searchText isEqual:@""])
+    {
+        [_searchResults removeAllObjects];
+        _searchResults = nil;
+        [self.tableView reloadData];
+        NSLog(@"Nothing in the search bar");
+    }
 }
 
 //This will make the search bar stretch from the top

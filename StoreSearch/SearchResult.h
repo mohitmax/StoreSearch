@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 ms. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+@import Foundation;
 
 @interface SearchResult : NSObject
 
