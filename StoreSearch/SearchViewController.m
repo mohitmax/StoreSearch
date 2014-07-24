@@ -8,6 +8,9 @@
 
 #import "SearchViewController.h"
 #import "SearchResult.h"
+#import "SearchResultCell.h"
+
+static NSString* const SearchResultCellIdentifier = @"SearchResultCell";
 
 @interface SearchViewController ()
 @property (nonatomic, weak) IBOutlet UISearchBar* searchBar;
@@ -33,6 +36,9 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     self.tableView.contentInset = UIEdgeInsetsMake(64, 0, 0, 0);
+    
+    UINib *cellNib = [UINib nibWithNibName:SearchResultCellIdentifier bundle:nil];
+    [self.tableView registerNib:cellNib forCellReuseIdentifier:SearchResultCellIdentifier];
 }
 
 - (void)didReceiveMemoryWarning
@@ -61,24 +67,21 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString* cellIdentifier = @"SearchResultCell";
-    UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-    
-    if(cell == nil)
-    {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
-    }
+    SearchResultCell* cell = [tableView dequeueReusableCellWithIdentifier:SearchResultCellIdentifier];
     
     if(_searchResults.count == 0)
     {
-        cell.textLabel.text = @"(Nothing Found)";
-        cell.detailTextLabel.text = @"";
+        cell.nameLabel.hidden = YES;
+        cell.artistNameLabel.hidden = YES;
+        cell.artworkImageView.hidden = YES;
+        cell.textLabel.text = @"Nothing Found!";
+        cell.textLabel.textAlignment = NSTextAlignmentCenter;
     }
     else
     {
         SearchResult* searchResult = _searchResults[indexPath.row];
-        cell.textLabel.text = searchResult.name;
-        cell.detailTextLabel.text = searchResult.artistName;
+        cell.nameLabel.text = searchResult.name;
+        cell.artistNameLabel.text = searchResult.artistName;
     }
     
     return cell;
@@ -101,6 +104,11 @@
     {
         return indexPath;
     }
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 80.0f;
 }
 
 #pragma  mark - Search bar delegate
