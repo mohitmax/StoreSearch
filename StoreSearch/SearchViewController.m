@@ -11,6 +11,7 @@
 #import "SearchResultCell.h"
 
 static NSString* const SearchResultCellIdentifier = @"SearchResultCell";
+static NSString* const NothingFoundCellIdentifier = @"NothingFoundCell";
 
 @interface SearchViewController ()
 @property (nonatomic, weak) IBOutlet UISearchBar* searchBar;
@@ -37,8 +38,11 @@ static NSString* const SearchResultCellIdentifier = @"SearchResultCell";
     // Do any additional setup after loading the view from its nib.
     self.tableView.contentInset = UIEdgeInsetsMake(64, 0, 0, 0);
     
-    UINib *cellNib = [UINib nibWithNibName:SearchResultCellIdentifier bundle:nil];
-    [self.tableView registerNib:cellNib forCellReuseIdentifier:SearchResultCellIdentifier];
+    UINib *cellNib = [UINib nibWithNibName:NothingFoundCellIdentifier bundle:nil];
+    [self.tableView registerNib:cellNib forCellReuseIdentifier:NothingFoundCellIdentifier];
+    
+    UINib *searchNib = [UINib nibWithNibName:SearchResultCellIdentifier bundle:nil];
+    [self.tableView registerNib:searchNib forCellReuseIdentifier:SearchResultCellIdentifier];
 }
 
 - (void)didReceiveMemoryWarning
@@ -67,24 +71,20 @@ static NSString* const SearchResultCellIdentifier = @"SearchResultCell";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    SearchResultCell* cell = [tableView dequeueReusableCellWithIdentifier:SearchResultCellIdentifier];
-    
     if(_searchResults.count == 0)
     {
-        cell.nameLabel.hidden = YES;
-        cell.artistNameLabel.hidden = YES;
-        cell.artworkImageView.hidden = YES;
-        cell.textLabel.text = @"Nothing Found!";
-        cell.textLabel.textAlignment = NSTextAlignmentCenter;
+       return [tableView dequeueReusableCellWithIdentifier:NothingFoundCellIdentifier
+                                              forIndexPath:indexPath];
     }
     else
     {
+        SearchResultCell* cell = (SearchResultCell*)[tableView dequeueReusableCellWithIdentifier:SearchResultCellIdentifier
+                                                                                    forIndexPath:indexPath];
         SearchResult* searchResult = _searchResults[indexPath.row];
         cell.nameLabel.text = searchResult.name;
         cell.artistNameLabel.text = searchResult.artistName;
+        return cell;
     }
-    
-    return cell;
 }
 
 #pragma mark - table view delegate
@@ -128,6 +128,7 @@ static NSString* const SearchResultCellIdentifier = @"SearchResultCell";
             [_searchResults addObject:searchResult];
         }
     }
+
     [self.tableView reloadData];
 }
 
