@@ -116,22 +116,89 @@ static NSString* const NothingFoundCellIdentifier = @"NothingFoundCell";
 #pragma  mark - Search bar delegate
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
-    [searchBar resignFirstResponder];
-    
-    _searchResults = [NSMutableArray arrayWithCapacity:10];
-    if(![searchBar.text isEqualToString:@"juju"])
+    if (searchBar.text.length > 0)
     {
-        for (int i = 0; i < 3; i++)
+        [searchBar resignFirstResponder];
+        
+        _searchResults = [NSMutableArray arrayWithCapacity:10];
+        
+        NSURL* url = [self urlWithSearchText:searchBar.text];
+        NSLog(@"URL : '%@' ",url);
+        
+        NSString* jsonString = [self performStoreRequestWithUrl:url];
+        NSLog(@"Received JSON string: '%@' ", jsonString);
+        if (jsonString == nil)
         {
-            SearchResult* searchResult = [[SearchResult alloc] init];
-            searchResult.name = [NSString stringWithFormat:
-                                 @"Fake Result %d for '%@'", i, searchBar.text];
-            searchResult.artistName = searchBar.text;
-            [_searchResults addObject:searchResult];
+            [self showNetworkError];
+            return;
         }
+        
+        NSDictionary*  dictionary = [self parseJson:jsonString];
+        NSLog(@"Dictionary : '%@'", dictionary);
+        if(dictionary == nil)
+        {
+            [self showNetworkError];
+            return;
+        }
+        
+        [self.tableView reloadData];
     }
+}
 
-    [self.tableView reloadData];
+- (NSString*)performStoreRequestWithUrl: (NSURL*)url
+{
+    NSError* error;
+    NSString *resultString = [NSString stringWithContentsOfURL:url encoding:NSUTF8StringEncoding error:&error];
+    
+    if (resultString == nil)
+    {
+        NSLog(@"Download Error: %@", error);
+        return nil;
+    }
+    
+    return resultString;
+}
+
+- (NSURL*)urlWithSearchText:(NSString*)searchText;
+{
+    NSString *escapedSearchText = [searchText stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    
+    NSString *urlString = [NSString stringWithFormat:@"http://itunes.apple.com/search?term=%@", escapedSearchText];
+    NSURL *url = [NSURL URLWithString:urlString];
+    
+    return url;
+}
+
+- (NSDictionary*)parseJson:(NSString*)jsonString
+{
+    NSData* data = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
+    NSError* error;
+    id resultObject = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+    
+    if (resultObject == nil)
+    {
+        NSLog(@"JSON error: %@", error);
+        return nil;
+    }
+    
+    if (![resultObject isKindOfClass:[NSDictionary class]])
+    {
+        NSLog(@"JSON Error: Expected Dictionary -- SearchViewController - parseJson:jsonString");
+        return nil;
+    }
+    
+    return resultObject;
+}
+
+- (void)showNetworkError
+{
+    UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Whoops.."
+                                                        message:@"There was an error reading from the iTunes store. Please try again."
+                                                       delegate:nil
+                                              cancelButtonTitle:@"Ok"
+                                              otherButtonTitles:nil, nil];
+    
+    [alertView show];
 }
 
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar
