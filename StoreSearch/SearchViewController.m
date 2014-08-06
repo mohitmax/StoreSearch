@@ -141,8 +141,20 @@ static NSString* const NothingFoundCellIdentifier = @"NothingFoundCell";
             return;
         }
         
+        [self parseDictionary:dictionary];
+        
         [self.tableView reloadData];
     }
+}
+
+- (NSURL*)urlWithSearchText:(NSString*)searchText;
+{
+    NSString *escapedSearchText = [searchText stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    
+    NSString *urlString = [NSString stringWithFormat:@"http://itunes.apple.com/search?term=%@", escapedSearchText];
+    NSURL *url = [NSURL URLWithString:urlString];
+    
+    return url;
 }
 
 - (NSString*)performStoreRequestWithUrl: (NSURL*)url
@@ -157,16 +169,6 @@ static NSString* const NothingFoundCellIdentifier = @"NothingFoundCell";
     }
     
     return resultString;
-}
-
-- (NSURL*)urlWithSearchText:(NSString*)searchText;
-{
-    NSString *escapedSearchText = [searchText stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    
-    NSString *urlString = [NSString stringWithFormat:@"http://itunes.apple.com/search?term=%@", escapedSearchText];
-    NSURL *url = [NSURL URLWithString:urlString];
-    
-    return url;
 }
 
 - (NSDictionary*)parseJson:(NSString*)jsonString
@@ -199,6 +201,21 @@ static NSString* const NothingFoundCellIdentifier = @"NothingFoundCell";
                                               otherButtonTitles:nil, nil];
     
     [alertView show];
+}
+
+- (void)parseDictionary:(NSDictionary*)dictionary
+{
+    NSArray* array = dictionary[@"results"];
+    if (array == nil)
+    {
+        NSLog(@"Expected 'results' array");
+        return;
+    }
+    
+    for (NSDictionary* resultDict in array)
+    {
+        NSLog(@"wrapperType: %@, kind: %@", resultDict[@"wrapperType"], resultDict[@"kind"]);
+    }
 }
 
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar

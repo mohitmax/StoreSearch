@@ -12,5 +12,12 @@
 
 @property (nonatomic, strong) NSString* name;
 @property (nonatomic, strong) NSString* artistName;
+@property (nonatomic, strong) NSString* artworkUrl60;
+@property (nonatomic, strong) NSString* artworkUrl100;
+@property (nonatomic, strong) NSString* storeUrl;
+@property (nonatomic, strong) NSString* kind;
+@property (nonatomic, strong) NSString* currency;
+@property (nonatomic, strong) NSString* genre;
+@property (nonatomic, strong) NSDecimalNumber* price;
 
 @end
