@@ -84,8 +84,65 @@ static NSString* const NothingFoundCellIdentifier = @"NothingFoundCell";
                                                                                     forIndexPath:indexPath];
         SearchResult* searchResult = _searchResults[indexPath.row];
         cell.nameLabel.text = searchResult.name;
-        cell.artistNameLabel.text = searchResult.artistName;
+        
+        NSString* artistname = searchResult.artistName;
+        if(artistname == nil)
+        {
+            artistname = @"Unknown";
+        }
+        
+        NSString* kind = [self kindForDisplay:searchResult.kind];
+        cell.artistNameLabel.text = [NSString stringWithFormat:@"%@ (%@)", artistname, kind];
+        
         return cell;
+    }
+}
+
+- (NSString *)kindForDisplay:(NSString *)kind
+{
+    if ([kind isEqualToString:@"album"])
+    {
+        return @"Album";
+    }
+    else if ([kind isEqualToString:@"audiobook"])
+    {
+        return @"Audio Book";
+    }
+    else if ([kind isEqualToString:@"book"])
+    {
+        return @"Book";
+    }
+    else if ([kind isEqualToString:@"ebook"])
+    {
+        return @"E-Book";
+    }
+    else if ([kind isEqualToString:@"feature-movie"])
+    {
+        return @"Movie";
+    }
+    else if ([kind isEqualToString:@"music-video"])
+    {
+        return @"Music Video";
+    }
+    else if ([kind isEqualToString:@"podcast"])
+    {
+        return @"Podcast";
+    }
+    else if ([kind isEqualToString:@"software"])
+    {
+        return @"App";
+    }
+    else if ([kind isEqualToString:@"song"])
+    {
+        return @"Song";
+    }
+    else if ([kind isEqualToString:@"tv-episode"])
+    {
+        return @"TV Episode";
+    }
+    else
+    {
+        return kind;
     }
 }
 
@@ -142,10 +199,41 @@ static NSString* const NothingFoundCellIdentifier = @"NothingFoundCell";
         }
         
         [self parseDictionary:dictionary];
+        [_searchResults sortUsingSelector:@selector(compareName:)];
         
         [self.tableView reloadData];
     }
 }
+
+- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar
+{
+    if([searchBar.text isEqual:@""])
+    {
+        [_searchResults removeAllObjects];
+        _searchResults = nil;
+        [self.tableView reloadData];
+        NSLog(@"Begin editing : %@", searchBar.text);
+    }
+}
+
+//This method is called when the text in the search bar changes.
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
+{
+    if ([searchText isEqual:@""])
+    {
+        [_searchResults removeAllObjects];
+        _searchResults = nil;
+        [self.tableView reloadData];
+        NSLog(@"Nothing in the search bar");
+    }
+}
+
+//This will make the search bar stretch from the top
+- (UIBarPosition)positionForBar:(id<UIBarPositioning>)bar
+{
+    return UIBarPositionTopAttached;
+}
+
 
 - (NSURL*)urlWithSearchText:(NSString*)searchText;
 {
@@ -215,36 +303,95 @@ static NSString* const NothingFoundCellIdentifier = @"NothingFoundCell";
     for (NSDictionary* resultDict in array)
     {
         NSLog(@"wrapperType: %@, kind: %@", resultDict[@"wrapperType"], resultDict[@"kind"]);
+        
+        SearchResult* searchResult;
+        NSString* wrapperType = resultDict[@"wrapperType"];
+        NSString* kind = resultDict[@"kind"];
+        
+        if([wrapperType isEqualToString:@"track"])
+        {
+            searchResult = [self parseTrack:resultDict];
+        }
+        else if ([wrapperType isEqualToString:@"audiobook"])
+        {
+            searchResult = [self parseAudioBook:resultDict];
+        }
+        else if ([wrapperType isEqualToString:@"software"])
+        {
+            searchResult = [self parseSoftware:resultDict];
+        }
+        else if ([kind isEqualToString:@"ebook"])
+        {
+            searchResult = [self parseEBook:resultDict];
+        }
+        
+        if(searchResult != nil)
+        {
+            [_searchResults addObject:searchResult];
+        }
     }
 }
 
-- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar
+#pragma mark - parsing different types of media
+
+- (SearchResult*)parseTrack:(NSDictionary*)dictionary
 {
-    if([searchBar.text isEqual:@""])
-    {
-        [_searchResults removeAllObjects];
-        _searchResults = nil;
-        [self.tableView reloadData];
-        NSLog(@"Begin editing : %@", searchBar.text);
-    }
+    SearchResult* searchResult = [[SearchResult alloc] init];
+    
+    searchResult.name = dictionary[@"trackName"];
+    searchResult.artistName = dictionary[@"artistName"];
+    searchResult.artworkUrl60 = dictionary[@"artworkUrl60"];
+    searchResult.artworkUrl100 = dictionary[@"artworkUrl100"];
+    searchResult.storeUrl = dictionary[@"trackViewUrl"];
+    searchResult.kind = dictionary[@"kind"];
+    searchResult.price = dictionary[@"trackPrice"];
+    searchResult.currency = dictionary[@"currency"];
+    searchResult.genre = dictionary[@"primaryGenreName"];
+    return searchResult;
 }
 
-//This method is called when the text in the search bar changes. 
-- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
+- (SearchResult *)parseAudioBook:(NSDictionary *)dictionary
 {
-    if ([searchText isEqual:@""])
-    {
-        [_searchResults removeAllObjects];
-        _searchResults = nil;
-        [self.tableView reloadData];
-        NSLog(@"Nothing in the search bar");
-    }
+    SearchResult *searchResult = [[SearchResult alloc] init];
+    searchResult.name = dictionary[@"collectionName"];
+    searchResult.artistName = dictionary[@"artistName"];
+    searchResult.artworkUrl60 = dictionary[@"artworkUrl60"];
+    searchResult.artworkUrl100 = dictionary[@"artworkUrl100"];
+    searchResult.storeUrl = dictionary[@"collectionViewUrl"];
+    searchResult.kind = @"audiobook";
+    searchResult.price = dictionary[@"collectionPrice"];
+    searchResult.currency = dictionary[@"currency"];
+    searchResult.genre = dictionary[@"primaryGenreName"];
+    return searchResult;
 }
-
-//This will make the search bar stretch from the top
-- (UIBarPosition)positionForBar:(id<UIBarPositioning>)bar
+- (SearchResult *)parseSoftware:(NSDictionary *)dictionary
 {
-    return UIBarPositionTopAttached;
+    SearchResult *searchResult = [[SearchResult alloc] init];
+    searchResult.name = dictionary[@"trackName"];
+    searchResult.artistName = dictionary[@"artistName"];
+    searchResult.artworkUrl60 = dictionary[@"artworkUrl60"];
+    searchResult.artworkUrl100 = dictionary[@"artworkUrl100"];
+    searchResult.storeUrl = dictionary[@"trackViewUrl"];
+    searchResult.kind = dictionary[@"kind"];
+    searchResult.price = dictionary[@"price"];
+    searchResult.currency = dictionary[@"currency"];
+    searchResult.genre = dictionary[@"primaryGenreName"];
+    return searchResult;
+}
+- (SearchResult *)parseEBook:(NSDictionary *)dictionary
+{
+    SearchResult *searchResult = [[SearchResult alloc] init];
+    searchResult.name = dictionary[@"trackName"];
+    searchResult.artistName = dictionary[@"artistName"];
+    searchResult.artworkUrl60 = dictionary[@"artworkUrl60"];
+    searchResult.artworkUrl100 = dictionary[@"artworkUrl100"];
+    searchResult.storeUrl = dictionary[@"trackViewUrl"];
+    searchResult.kind = dictionary[@"kind"];
+    searchResult.price = dictionary[@"price"];
+    searchResult.currency = dictionary[@"currency"];
+    searchResult.genre = [(NSArray *)dictionary[@"genres"]
+                          componentsJoinedByString:@", "];
+    return searchResult;
 }
 
 @end

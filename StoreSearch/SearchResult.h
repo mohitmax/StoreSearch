@@ -20,4 +20,6 @@
 @property (nonatomic, strong) NSString* genre;
 @property (nonatomic, strong) NSDecimalNumber* price;
 
+- (NSComparisonResult)compareName:(SearchResult*)other;
+
 @end
