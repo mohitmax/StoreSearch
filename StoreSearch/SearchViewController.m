@@ -86,7 +86,7 @@ static NSString* const LoadingCellIdentifier = @"LoadingCell";
     {
         UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:LoadingCellIdentifier forIndexPath:indexPath];
         
-        UIActivityIndicatorView* spinner = (UIActivityIndicatorView*)[cell viewWithTag:@"100"];
+        UIActivityIndicatorView* spinner = (UIActivityIndicatorView*)[cell viewWithTag:100];
         [spinner startAnimating];
         
         return cell;

@@ -9,7 +9,7 @@
 #import "SearchResultCell.h"
 
 @implementation SearchResultCell
-
+ 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
