@@ -12,6 +12,7 @@
 
 static NSString* const SearchResultCellIdentifier = @"SearchResultCell";
 static NSString* const NothingFoundCellIdentifier = @"NothingFoundCell";
+static NSString* const LoadingCellIdentifier = @"LoadingCell";
 
 @interface SearchViewController ()
 @property (nonatomic, weak) IBOutlet UISearchBar* searchBar;
@@ -21,6 +22,7 @@ static NSString* const NothingFoundCellIdentifier = @"NothingFoundCell";
 @implementation SearchViewController
 {
     NSMutableArray* _searchResults;
+    BOOL _isLoading;
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -44,6 +46,9 @@ static NSString* const NothingFoundCellIdentifier = @"NothingFoundCell";
     UINib *searchNib = [UINib nibWithNibName:SearchResultCellIdentifier bundle:nil];
     [self.tableView registerNib:searchNib forCellReuseIdentifier:SearchResultCellIdentifier];
     
+    cellNib = [UINib nibWithNibName:LoadingCellIdentifier bundle:nil];
+    [self.tableView registerNib:cellNib forCellReuseIdentifier:LoadingCellIdentifier];
+    
     [self.searchBar becomeFirstResponder];
 }
 
@@ -57,7 +62,11 @@ static NSString* const NothingFoundCellIdentifier = @"NothingFoundCell";
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if(_searchResults == nil)
+    if (_isLoading)
+    {
+        return 1;
+    }
+    else if(_searchResults == nil)
     {
         return 0;
     }
@@ -73,6 +82,16 @@ static NSString* const NothingFoundCellIdentifier = @"NothingFoundCell";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (_isLoading)
+    {
+        UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:LoadingCellIdentifier forIndexPath:indexPath];
+        
+        UIActivityIndicatorView* spinner = (UIActivityIndicatorView*)[cell viewWithTag:@"100"];
+        [spinner startAnimating];
+        
+        return cell;
+    }
+    
     if(_searchResults.count == 0)
     {
        return [tableView dequeueReusableCellWithIdentifier:NothingFoundCellIdentifier
@@ -155,7 +174,7 @@ static NSString* const NothingFoundCellIdentifier = @"NothingFoundCell";
 
 - (NSIndexPath*)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if(_searchResults.count == 0)
+    if(_searchResults.count == 0 || _isLoading)
     {
         return nil;
     }
@@ -177,31 +196,44 @@ static NSString* const NothingFoundCellIdentifier = @"NothingFoundCell";
     {
         [searchBar resignFirstResponder];
         
+        _isLoading = YES;
+        [self.tableView reloadData];
         _searchResults = [NSMutableArray arrayWithCapacity:10];
         
-        NSURL* url = [self urlWithSearchText:searchBar.text];
-        NSLog(@"URL : '%@' ",url);
-        
-        NSString* jsonString = [self performStoreRequestWithUrl:url];
-        NSLog(@"Received JSON string: '%@' ", jsonString);
-        if (jsonString == nil)
-        {
-            [self showNetworkError];
-            return;
-        }
-        
-        NSDictionary*  dictionary = [self parseJson:jsonString];
-        NSLog(@"Dictionary : '%@'", dictionary);
-        if(dictionary == nil)
-        {
-            [self showNetworkError];
-            return;
-        }
-        
-        [self parseDictionary:dictionary];
-        [_searchResults sortUsingSelector:@selector(compareName:)];
-        
-        [self.tableView reloadData];
+        dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+        dispatch_async(queue, ^{
+            NSURL* url = [self urlWithSearchText:searchBar.text];
+            NSString* jsonString = [self performStoreRequestWithUrl:url];
+            if (jsonString == nil)
+            {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self showNetworkError];
+                });
+                NSLog(@"Error");
+                return;
+            }
+
+            NSDictionary*  dictionary = [self parseJson:jsonString];
+            NSLog(@"Dictionary : '%@'", dictionary);
+            if(dictionary == nil)
+            {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self showNetworkError];
+                });
+                NSLog(@"Error!");
+                return;
+            }
+
+            [self parseDictionary:dictionary];
+            [_searchResults sortUsingSelector:@selector(compareName:)];
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                _isLoading = NO;
+                [self.tableView reloadData];
+            });
+            
+            NSLog(@"DONE!");
+        });
     }
 }
 
@@ -239,7 +271,7 @@ static NSString* const NothingFoundCellIdentifier = @"NothingFoundCell";
 {
     NSString *escapedSearchText = [searchText stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     
-    NSString *urlString = [NSString stringWithFormat:@"http://itunes.apple.com/search?term=%@", escapedSearchText];
+    NSString *urlString = [NSString stringWithFormat:@"http://itunes.apple.com/search?term=%@&limit=200", escapedSearchText];
     NSURL *url = [NSURL URLWithString:urlString];
     
     return url;
