@@ -38,6 +38,14 @@
     // Configure the view for the selected state
 }
 
+- (void)prepareForReuse
+{
+    [super prepareForReuse];
+    [self.artworkImageView cancelImageRequestOperation];
+    self.nameLabel.text = nil;
+    self.artistNameLabel.text = nil;
+}
+
 - (void)configureForSearchResult:(SearchResult *)searchResult
 {
     self.nameLabel.text = searchResult.name;
@@ -50,6 +58,9 @@
     
     NSString* kind = [self kindForDisplay:searchResult.kind];
     self.artistNameLabel.text = [NSString stringWithFormat:@"%@ (%@)", artistname, kind];
+    
+    [self.artworkImageView setImageWithURL:[NSURL URLWithString:searchResult.artworkUrl60] placeholderImage:[UIImage imageNamed:@"Placeholder"]];
+    
 }
 
 - (NSString *)kindForDisplay:(NSString *)kind
