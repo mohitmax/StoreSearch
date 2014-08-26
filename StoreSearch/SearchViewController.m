@@ -16,8 +16,10 @@ static NSString* const NothingFoundCellIdentifier = @"NothingFoundCell";
 static NSString* const LoadingCellIdentifier = @"LoadingCell";
 
 @interface SearchViewController ()
+
 @property (nonatomic, weak) IBOutlet UISearchBar* searchBar;
 @property (nonatomic, weak) IBOutlet UITableView* tableView;
+@property (nonatomic, weak) IBOutlet UISegmentedControl *segmentedControl;
 @end
 
 @implementation SearchViewController
@@ -41,7 +43,7 @@ static NSString* const LoadingCellIdentifier = @"LoadingCell";
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    self.tableView.contentInset = UIEdgeInsetsMake(64, 0, 0, 0);
+    self.tableView.contentInset = UIEdgeInsetsMake(108, 0, 0, 0);
     
     UINib *cellNib = [UINib nibWithNibName:NothingFoundCellIdentifier bundle:nil];
     [self.tableView registerNib:cellNib forCellReuseIdentifier:NothingFoundCellIdentifier];
@@ -105,17 +107,7 @@ static NSString* const LoadingCellIdentifier = @"LoadingCell";
         SearchResultCell* cell = (SearchResultCell*)[tableView dequeueReusableCellWithIdentifier:SearchResultCellIdentifier
                                                                                     forIndexPath:indexPath];
         SearchResult* searchResult = _searchResults[indexPath.row];
-        cell.nameLabel.text = searchResult.name;
-        
-        NSString* artistname = searchResult.artistName;
-        if(artistname == nil)
-        {
-            artistname = @"Unknown";
-        }
-        
-        NSString* kind = [self kindForDisplay:searchResult.kind];
-        cell.artistNameLabel.text = [NSString stringWithFormat:@"%@ (%@)", artistname, kind];
-        
+        [cell configureForSearchResult:searchResult];
         return cell;
     }
 }
@@ -195,9 +187,14 @@ static NSString* const LoadingCellIdentifier = @"LoadingCell";
 #pragma  mark - Search bar delegate
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
-    if (searchBar.text.length > 0)
+    [self performSearch];
+}
+
+- (void)performSearch
+{
+    if (self.searchBar.text.length > 0)
     {
-        [searchBar resignFirstResponder];
+        [self.searchBar resignFirstResponder];
         [_queue cancelAllOperations];
         
         _isLoading = YES;
@@ -239,7 +236,7 @@ static NSString* const LoadingCellIdentifier = @"LoadingCell";
 //            NSLog(@"DONE!");
 //        });
         
-        NSURL* url = [self urlWithSearchText:searchBar.text];
+        NSURL* url = [self urlWithSearchText:self.searchBar.text category:self.segmentedControl.selectedSegmentIndex];
         NSURLRequest* request = [NSURLRequest requestWithURL:url];
         
         AFHTTPRequestOperation* operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
@@ -302,11 +299,28 @@ static NSString* const LoadingCellIdentifier = @"LoadingCell";
 }
 
 
-- (NSURL*)urlWithSearchText:(NSString*)searchText;
+- (NSURL*)urlWithSearchText:(NSString*)searchText category:(NSInteger) category
 {
+    NSString* categoryName;
+    switch (category)
+    {
+        case 0:
+            categoryName = @"";
+            break;
+        case 1:
+            categoryName = @"musicTrack";
+            break;
+        case 2:
+            categoryName = @"software";
+            break;
+        case 3:
+            categoryName = @"ebook";
+            break;
+    }
+    
     NSString *escapedSearchText = [searchText stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     
-    NSString *urlString = [NSString stringWithFormat:@"http://itunes.apple.com/search?term=%@&limit=200", escapedSearchText];
+    NSString *urlString = [NSString stringWithFormat:@"http://itunes.apple.com/search?term=%@&limit=200&entity=%@", escapedSearchText, categoryName];
     NSURL *url = [NSURL URLWithString:urlString];
     
     return url;
@@ -460,6 +474,17 @@ static NSString* const LoadingCellIdentifier = @"LoadingCell";
     searchResult.genre = [(NSArray *)dictionary[@"genres"]
                           componentsJoinedByString:@", "];
     return searchResult;
+}
+
+#pragma mark - IBOutlet methods
+
+- (IBAction)segmentChanged:(UISegmentedControl *)sender
+{
+    NSLog(@"segment changed : %ld", (long)sender.selectedSegmentIndex);
+    if (_searchResults != nil)
+    {
+        [self performSearch];
+    }
 }
 
 @end
