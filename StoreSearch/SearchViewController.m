@@ -198,6 +198,7 @@ static NSString* const LoadingCellIdentifier = @"LoadingCell";
     if (searchBar.text.length > 0)
     {
         [searchBar resignFirstResponder];
+        [_queue cancelAllOperations];
         
         _isLoading = YES;
         [self.tableView reloadData];
@@ -256,6 +257,10 @@ static NSString* const LoadingCellIdentifier = @"LoadingCell";
         }
             failure:^(AFHTTPRequestOperation *operation, NSError *error)
         {
+            if(operation.isCancelled)
+            {
+                return;
+            }
             NSLog(@"Error! %@", error);
             [self showNetworkError];
             
