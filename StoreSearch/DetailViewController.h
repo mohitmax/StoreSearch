@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+@class SearchResult;
+
 @interface DetailViewController : UIViewController <UIGestureRecognizerDelegate>
 
 @property (nonatomic, strong) IBOutlet UIView* popupView;
@@ -17,6 +19,8 @@
 @property (nonatomic, strong) IBOutlet UILabel* kindLabel;
 @property (nonatomic, strong) IBOutlet UILabel* genreLabel;
 @property (nonatomic, strong) IBOutlet UIButton* priceButton;
+
+@property (nonatomic, strong) SearchResult* searchResult;
 
 - (IBAction)close:(id)sender;
 

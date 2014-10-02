@@ -7,6 +7,8 @@
 //
 
 #import "DetailViewController.h"
+#import "SearchResult.h"
+#import <AFNetworking/UIImageView+AFNetworking.h>
 
 @interface DetailViewController ()
 
@@ -30,6 +32,43 @@
     tapGesture.cancelsTouchesInView = NO;
     tapGesture.delegate = self;
     [self.view addGestureRecognizer:tapGesture];
+    
+    if (self.searchResult != nil)
+    {
+        [self update];
+    }
+}
+
+- (void)update
+{
+    self.nameLabel.text = self.searchResult.name;
+    
+    NSString* artistName = self.searchResult.artistName;
+    if (artistName == nil)
+    {
+        artistName = @"Unknkown";
+    }
+    
+    self.artistNameLabel.text = artistName;
+    self.kindLabel.text = [self.searchResult kindForDisplay];
+    self.genreLabel.text = self.searchResult.genre;
+    [self.artworkImageView setImageWithURL:[NSURL URLWithString:self.searchResult.artworkUrl100]];
+    
+    NSNumberFormatter* formatter = [[NSNumberFormatter alloc] init];
+    [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+    [formatter setCurrencyCode:self.searchResult.currency];
+    
+    NSString* priceText;
+    if ([self.searchResult.price floatValue] == 0.0f)
+    {
+        priceText = @"Free";
+    }
+    else
+    {
+        priceText = [formatter stringFromNumber:self.searchResult.price];
+    }
+    [self.priceButton setTitle:priceText forState:UIControlStateNormal];
+
 }
 
 - (void)didReceiveMemoryWarning {
@@ -51,9 +90,16 @@
     [self removeFromParentViewController];
 }
 
+- (IBAction)openInStore:(id)sender
+{
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:self.searchResult.storeUrl]];
+}
+
 - (void) dealloc
 {
     NSLog(@"dealloc %@", self);
+    [self.artworkImageView cancelImageRequestOperation];
 }
+
 
 @end

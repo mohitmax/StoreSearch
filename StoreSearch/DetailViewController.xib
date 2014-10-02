@@ -65,12 +65,19 @@
                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="enW-lH-Yzx">
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="enW-lH-Yzx">
                             <rect key="frame" x="174" y="230" width="60" height="24"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="24" id="ycY-j6-Xrx"/>
+                            </constraints>
                             <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                            <inset key="contentEdgeInsets" minX="5" minY="0.0" maxX="5" maxY="0.0"/>
                             <state key="normal" title="$9.99">
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
+                            <connections>
+                                <action selector="openInStore:" destination="-1" eventType="touchUpInside" id="TrZ-e4-wou"/>
+                            </connections>
                         </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Type:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7LN-6v-0oA">
                             <rect key="frame" x="10" y="181" width="43" height="19"/>
@@ -81,8 +88,10 @@
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="0.95000000000000007" colorSpace="calibratedWhite"/>
                     <constraints>
+                        <constraint firstAttribute="trailing" secondItem="enW-lH-Yzx" secondAttribute="trailing" constant="6" id="0Mm-4y-OGV"/>
                         <constraint firstAttribute="height" constant="260" id="Lzk-x6-kwI"/>
                         <constraint firstAttribute="width" constant="240" id="dcf-XP-K5E"/>
+                        <constraint firstAttribute="bottom" secondItem="enW-lH-Yzx" secondAttribute="bottom" constant="6" id="vbr-gG-9X7"/>
                     </constraints>
                 </view>
             </subviews>
