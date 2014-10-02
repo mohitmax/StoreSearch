@@ -32,6 +32,7 @@
 		9795A4EF199E762400D73B30 /* LoadingCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9795A4EE199E762400D73B30 /* LoadingCell.xib */; };
 		97DDBE7F19DDAC230086D7BA /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 97DDBE7D19DDAC230086D7BA /* DetailViewController.m */; };
 		97DDBE8019DDAC230086D7BA /* DetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 97DDBE7E19DDAC230086D7BA /* DetailViewController.xib */; };
+		97DDBE8319DDDCF50086D7BA /* GradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = 97DDBE8219DDDCF50086D7BA /* GradientView.m */; };
 		97EBDE231976DEDB00D4E3C7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97EBDE221976DEDB00D4E3C7 /* Foundation.framework */; };
 		97EBDE251976DEDB00D4E3C7 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97EBDE241976DEDB00D4E3C7 /* CoreGraphics.framework */; };
 		97EBDE271976DEDB00D4E3C7 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97EBDE261976DEDB00D4E3C7 /* UIKit.framework */; };
@@ -86,6 +87,8 @@
 		97DDBE7C19DDAC230086D7BA /* DetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailViewController.h; sourceTree = "<group>"; };
 		97DDBE7D19DDAC230086D7BA /* DetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailViewController.m; sourceTree = "<group>"; };
 		97DDBE7E19DDAC230086D7BA /* DetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DetailViewController.xib; sourceTree = "<group>"; };
+		97DDBE8119DDDCF50086D7BA /* GradientView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GradientView.h; sourceTree = "<group>"; };
+		97DDBE8219DDDCF50086D7BA /* GradientView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GradientView.m; sourceTree = "<group>"; };
 		97EBDE1F1976DEDB00D4E3C7 /* StoreSearch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StoreSearch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		97EBDE221976DEDB00D4E3C7 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		97EBDE241976DEDB00D4E3C7 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -224,6 +227,8 @@
 				97DDBE7C19DDAC230086D7BA /* DetailViewController.h */,
 				97DDBE7D19DDAC230086D7BA /* DetailViewController.m */,
 				97DDBE7E19DDAC230086D7BA /* DetailViewController.xib */,
+				97DDBE8119DDDCF50086D7BA /* GradientView.h */,
+				97DDBE8219DDDCF50086D7BA /* GradientView.m */,
 				97EBDE291976DEDB00D4E3C7 /* Supporting Files */,
 			);
 			path = StoreSearch;
@@ -418,6 +423,7 @@
 				974B2AD01980147B0049E0A2 /* SearchResultCell.m in Sources */,
 				44B4408A197B2B2B00F8B2A7 /* SearchResult.m in Sources */,
 				97EBDE2F1976DEDB00D4E3C7 /* main.m in Sources */,
+				97DDBE8319DDDCF50086D7BA /* GradientView.m in Sources */,
 				97DDBE7F19DDAC230086D7BA /* DetailViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
