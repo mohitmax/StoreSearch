@@ -9,6 +9,7 @@
 #import "SearchViewController.h"
 #import "SearchResult.h"
 #import "SearchResultCell.h"
+#import "DetailViewController.h"
 #import <AFNetworking/AFNetworking.h>
 
 static NSString* const SearchResultCellIdentifier = @"SearchResultCell";
@@ -112,59 +113,18 @@ static NSString* const LoadingCellIdentifier = @"LoadingCell";
     }
 }
 
-- (NSString *)kindForDisplay:(NSString *)kind
-{
-    if ([kind isEqualToString:@"album"])
-    {
-        return @"Album";
-    }
-    else if ([kind isEqualToString:@"audiobook"])
-    {
-        return @"Audio Book";
-    }
-    else if ([kind isEqualToString:@"book"])
-    {
-        return @"Book";
-    }
-    else if ([kind isEqualToString:@"ebook"])
-    {
-        return @"E-Book";
-    }
-    else if ([kind isEqualToString:@"feature-movie"])
-    {
-        return @"Movie";
-    }
-    else if ([kind isEqualToString:@"music-video"])
-    {
-        return @"Music Video";
-    }
-    else if ([kind isEqualToString:@"podcast"])
-    {
-        return @"Podcast";
-    }
-    else if ([kind isEqualToString:@"software"])
-    {
-        return @"App";
-    }
-    else if ([kind isEqualToString:@"song"])
-    {
-        return @"Song";
-    }
-    else if ([kind isEqualToString:@"tv-episode"])
-    {
-        return @"TV Episode";
-    }
-    else
-    {
-        return kind;
-    }
-}
-
 #pragma mark - table view delegate
 
 - (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    DetailViewController* controller = [[DetailViewController alloc] initWithNibName:@"DetailViewController" bundle:nil];
+//    [self presentViewController:controller animated:YES completion:nil];
+    
+    [self.view addSubview:controller.view];
+    [self addChildViewController:controller];
+    [controller didMoveToParentViewController:self];
 }
 
 - (NSIndexPath*)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath

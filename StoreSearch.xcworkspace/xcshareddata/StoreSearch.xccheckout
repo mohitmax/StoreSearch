@@ -10,29 +10,29 @@
 	<string>StoreSearch</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>849993C9-4908-4686-86A3-A5BBD80E305C</key>
+		<key>CB924A7B68AE30E850CF86A405924AABE6239500</key>
 		<string>https://github.com/mohitmax/StoreSearch.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>StoreSearch.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>849993C9-4908-4686-86A3-A5BBD80E305C</key>
+		<key>CB924A7B68AE30E850CF86A405924AABE6239500</key>
 		<string>..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
 	<string>https://github.com/mohitmax/StoreSearch.git</string>
 	<key>IDESourceControlProjectVersion</key>
-	<integer>110</integer>
+	<integer>111</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>849993C9-4908-4686-86A3-A5BBD80E305C</string>
+	<string>CB924A7B68AE30E850CF86A405924AABE6239500</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>849993C9-4908-4686-86A3-A5BBD80E305C</string>
+			<string>CB924A7B68AE30E850CF86A405924AABE6239500</string>
 			<key>IDESourceControlWCCName</key>
 			<string>StoreSearch</string>
 		</dict>
