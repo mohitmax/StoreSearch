@@ -115,12 +115,12 @@ static NSString* const LoadingCellIdentifier = @"LoadingCell";
 
 #pragma mark - table view delegate
 
-- (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     DetailViewController* controller = [[DetailViewController alloc] initWithNibName:@"DetailViewController" bundle:nil];
-//    [self presentViewController:controller animated:YES completion:nil];
+    controller.view.frame = self.view.frame;
     
     [self.view addSubview:controller.view];
     [self addChildViewController:controller];
